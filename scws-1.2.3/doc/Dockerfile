@@ -1,4 +1,5 @@
-FROM centos:centos7
+FROM centos:centos7.2.1511
+# centos:centos7
 
 RUN yum -y update && yum -y install man tar curl bzip2 dos2unix make gcc gcc-c++
 
