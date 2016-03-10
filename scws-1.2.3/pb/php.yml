@@ -1,0 +1,19 @@
+---
+- hosts: "{{hosts}}"
+  become: yes
+ 
+  roles:
+    - ansible-role-php
+
+  vars:
+    php_enable_webserver: false
+    php_enable_apc: false
+    php_use_managed_ini: false
+    php_install_from_source: false
+    php_webserver_daemon: "nginx"
+
+  environment: '{{env}}'
+
+  pre_tasks:
+    - name: php var trace
+      debug: 'msg="host: {{hosts}}"'

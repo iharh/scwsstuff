@@ -59,7 +59,19 @@ COPY pb/${PB}.yml ${PB_HOME}/
 RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
 RUN ansible-playbook ${PB_HOME}/${PB}.yml -e "hosts=localhost"
 
+ENV PB yum3
+COPY pb/${PB}.yml ${PB_HOME}/
+RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
+#RUN ansible-playbook ${PB_HOME}/${PB}.yml -e "hosts=localhost"
+
 COPY env/docker/ ${ENV_HOME}/docker/
+
+ENV PB php
+COPY pb/${PB}.yml ${PB_HOME}/
+COPY roles/ansible-role-php/ ${ROLES_HOME}/ansible-role-php/
+RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
+RUN ANSIBLE_ROLES_PATH=${ROLES_HOME} ansible-playbook ${PB_HOME}/${PB}.yml -e @${ENV_HOME}/docker/extra-vars.json -e "hosts=localhost"
+
 
 #tar curl bzip2 dos2unix
 #make gcc gcc-c++

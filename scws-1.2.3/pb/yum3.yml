@@ -6,8 +6,6 @@
     - name: Install packages
       yum: name={{item}} state=present
       with_items:
-        - make
-        - gcc
-        - gcc-c++
+        - httpd
     - name: yum variable trace
       debug: 'msg="hosts: {{hosts}}"'
