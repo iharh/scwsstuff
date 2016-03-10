@@ -1,0 +1,14 @@
+---
+- hosts: "{{hosts}}"
+  become: yes
+ 
+  tasks:
+    - name: Install packages
+      yum: name={{item}} state=present
+      with_items:
+        - make
+        - gcc
+        - gcc-c++
+          #- php
+    - name: yum variable trace
+      debug: 'msg="hosts: {{hosts}}"'

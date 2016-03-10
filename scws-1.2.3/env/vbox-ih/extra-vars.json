@@ -1,0 +1,7 @@
+{
+  "env": {
+  },
+  "conda_profile": "scws",
+  "conda_create_env": "true",
+  "appname": "scws"
+}

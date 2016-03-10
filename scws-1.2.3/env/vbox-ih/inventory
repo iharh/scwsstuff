@@ -1,0 +1,14 @@
+#https://github.com/ansible/ansible/issues/11695
+# don't forget to put hosts to /etc/hosts
+
+[other]
+localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python2
+#rr2.***
+
+[dpt]
+192.168.235.102
+#epbygomw0024t1
+
+#[dpt:vars]
+#ansible_ssh_user=ihar.hancharenka
+#private_key_file=/home/.../.ssh/id_rsa
