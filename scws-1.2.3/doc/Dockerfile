@@ -100,6 +100,7 @@ RUN git clone https://github.com/hightman/${USER_NAME}.git
 WORKDIR ${USER_HOME}/${USER_NAME}/dev/dict
 RUN php calc_text.php > dict.txt
 RUN php -r 'echo mb_convert_encoding(file_get_contents("dict.txt"), "utf-8", "gbk");' > dict.utf8.txt
+RUN scws-gen-dict -c utf8 -i dict.utf8.txt -o dict.utf8.xdb
 
 WORKDIR ${USER_HOME}
 

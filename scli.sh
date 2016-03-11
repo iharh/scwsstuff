@@ -5,4 +5,4 @@ docker run --rm -ti\
  -v $(pwd):/project\
  -w /project\
  $CUR_GROUP/$CUR_NAME:$CUR_VER\
- scws -c utf8 -r /home/scws/scws/etc/rules.utf8.ini -d /home/scws/scws/dev/dict/dict.utf8.txt -A "$@"
+ scws -c utf8 -r /home/scws/scws/etc/rules.utf8.ini -d /home/scws/scws/dev/dict/dict.utf8.xdb -A "$@"
