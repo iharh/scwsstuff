@@ -1,11 +1,9 @@
 #! /bin/bash
 #./drun.sh "../prepare.sh && gradle clean runAcceptanceTests"
 set -e
-CUR_GROUP=cb-nlp
-CUR_NAME=scws
-CUR_VER=1.2.3
-#echo $(dirname $0)
 #set -x;
+CTX_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+. $CTX_DIR/env-vars.sh
 
 RUN_CMD="$@"
 if [[ -z "$RUN_CMD" ]]; then
@@ -21,9 +19,6 @@ fi
 #echo RUN_PORT_MAP: $RUN_PORT_MAP
 #echo RUN_PREF: $RUN_PREF
 #echo RUN_CMD: $RUN_CMD
-
-WRK_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )"
-CMN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../../.." && pwd )"
 
 docker run $RUN_FLAGS\
  $RUN_PORT_MAP\

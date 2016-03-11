@@ -4,10 +4,11 @@ FROM centos:centos7.2.1511
 
 RUN yum -y update && yum clean all
 RUN yum -y install httpd && yum clean all
-##RUN yum -y install man sudo which openssh-clients
+RUN yum -y install man sudo which openssh-clients
 
-#RUN yum -y install epel-release
-#RUN yum -y install ansible --enablerepo=epel-testing
+RUN yum -y install python-setuptools python-paramiko
+RUN easy_install pip
+RUN pip install ansible
 
 # Edit sudoers file
 # To avoid error: sudo: sorry, you must have a tty to run sudo

@@ -1,7 +1,8 @@
 #! /bin/bash
 set -e
-GUEST_USER_NAME=scws
-FILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/files" && pwd )"
+CUR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. $CUR_DIR/env-vars.sh
+FILES_DIR=$CUR_DIR/files
 
 ADD_USER_FILE=$FILES_DIR/add_host_user.sh
 if ! [[ -f $ADD_USER_FILE ]]; then

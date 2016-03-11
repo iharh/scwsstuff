@@ -1,0 +1,6 @@
+#! /bin/bash
+CUR_GROUP=cb-nlp
+CUR_NAME=scws
+CUR_VER=1.2.3
+GUEST_USER_NAME=$CUR_NAME
+
