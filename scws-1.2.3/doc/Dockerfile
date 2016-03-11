@@ -97,10 +97,17 @@ RUN sudo make install
 WORKDIR ${USER_HOME}
 RUN git clone https://github.com/hightman/${USER_NAME}.git
 
+#
+# gen chs dict
+#
 WORKDIR ${USER_HOME}/${USER_NAME}/dev/dict
 RUN php calc_text.php > dict.txt
 RUN php -r 'echo mb_convert_encoding(file_get_contents("dict.txt"), "utf-8", "gbk");' > dict.utf8.txt
 RUN scws-gen-dict -c utf8 -i dict.utf8.txt -o dict.utf8.xdb
+
+#
+# copy cht dict
+COPY ${FILES_HOME}/dict_cht.utf8.xdb ${USER_HOME}/${USER_NAME}/dev/dict
 
 WORKDIR ${USER_HOME}
 
@@ -109,10 +116,15 @@ COPY ${FILES_HOME}/${SCRIPT}.sh ${USER_HOME}/
 RUN sudo chmod +x ${USER_HOME}/${SCRIPT}.sh
 RUN sudo chown -R ${USER_NAME}:${USER_NAME} ${USER_HOME}/${SCRIPT}.sh
 
+ENV SCRIPT tcli
+COPY ${FILES_HOME}/${SCRIPT}.sh ${USER_HOME}/
+RUN sudo chmod +x ${USER_HOME}/${SCRIPT}.sh
+RUN sudo chown -R ${USER_NAME}:${USER_NAME} ${USER_HOME}/${SCRIPT}.sh
+
 #
 # sample data
 #
-COPY ${FILES_HOME}/in1.txt ${USER_HOME}/
+COPY ${FILES_HOME}/s1.txt ${USER_HOME}/
 
 #
 # volumes
