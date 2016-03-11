@@ -102,3 +102,10 @@ RUN php calc_text.php > dict.txt
 RUN php -r 'echo mb_convert_encoding(file_get_contents("dict.txt"), "utf-8", "gbk");' > dict.utf8.txt
 
 WORKDIR ${USER_HOME}
+
+ENV SCRIPT scli
+COPY ${FILES_HOME}/${SCRIPT}.sh ${USER_HOME}/
+RUN sudo chmod +x ${USER_HOME}/${SCRIPT}.sh
+RUN sudo chown -R ${USER_NAME}:${USER_NAME} ${USER_HOME}/${SCRIPT}.sh
+
+COPY ${FILES_HOME}/in1.txt ${USER_HOME}/
