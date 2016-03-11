@@ -6,7 +6,6 @@
     - name: Install packages
       yum: name={{item}} state=present
       with_items:
-        - git
-        - subversion
-    - name: pack-vcs variable trace
+        - php
+    - name: pack-php variable trace
       debug: 'msg="hosts: {{hosts}}"'

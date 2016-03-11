@@ -48,12 +48,9 @@ ENV ENV_HOME ${PROVIS_SCRIPTS_HOME}/env
 ENV ROLES_HOME ${PROVIS_SCRIPTS_HOME}/roles
 ENV FILES_HOME files
 
-ENV PB pack-base
-COPY pb/${PB}.yml ${PB_HOME}/
-RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
-RUN ansible-playbook ${PB_HOME}/${PB}.yml -e "hosts=localhost"
+COPY env/docker/ ${ENV_HOME}/docker/
 
-ENV PB pack-vcs
+ENV PB pack-base
 COPY pb/${PB}.yml ${PB_HOME}/
 RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
 RUN ansible-playbook ${PB_HOME}/${PB}.yml -e "hosts=localhost"
@@ -63,12 +60,20 @@ COPY pb/${PB}.yml ${PB_HOME}/
 RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
 RUN ansible-playbook ${PB_HOME}/${PB}.yml -e "hosts=localhost"
 
-COPY env/docker/ ${ENV_HOME}/docker/
-
-ENV PB php
+ENV PB pack-php
 COPY pb/${PB}.yml ${PB_HOME}/
-COPY roles/ansible-role-php/ ${ROLES_HOME}/ansible-role-php/
 RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
+RUN ansible-playbook ${PB_HOME}/${PB}.yml -e "hosts=localhost"
+
+ENV PB pack-vcs
+COPY pb/${PB}.yml ${PB_HOME}/
+RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
+RUN ansible-playbook ${PB_HOME}/${PB}.yml -e "hosts=localhost"
+
+#ENV PB php
+#COPY pb/${PB}.yml ${PB_HOME}/
+#COPY roles/ansible-role-php/ ${ROLES_HOME}/ansible-role-php/
+#RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
 #RUN ANSIBLE_ROLES_PATH=${ROLES_HOME} ansible-playbook ${PB_HOME}/${PB}.yml -e @${ENV_HOME}/docker/extra-vars.json -e "hosts=localhost"
 
 ##ENV PRJ_NAME scws

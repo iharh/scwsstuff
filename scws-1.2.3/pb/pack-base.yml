@@ -17,5 +17,5 @@
         - nano
         - bind-utils
         - libselinux-python
-    - name: pack variable trace
+    - name: pack-base variable trace
       debug: 'msg="hosts: {{hosts}}"'

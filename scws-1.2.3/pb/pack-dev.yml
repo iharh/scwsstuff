@@ -9,5 +9,5 @@
         - make
         - gcc
         - gcc-c++
-    - name: yum variable trace
+    - name: pack-dev variable trace
       debug: 'msg="hosts: {{hosts}}"'
