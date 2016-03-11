@@ -6,18 +6,10 @@
     - name: Install packages
       yum: name={{item}} state=present
       with_items:
-        - bzip2
-        - dos2unix
-        - unzip
-        - man
-        - tar
-        - curl
-        - rsync
-        - vim
-        - nano
-        - bind-utils
-        - libselinux-python
         - git
         - subversion
+        - make
+        - gcc
+        - gcc-c++
     - name: yum variable trace
       debug: 'msg="hosts: {{hosts}}"'
