@@ -108,4 +108,15 @@ COPY ${FILES_HOME}/${SCRIPT}.sh ${USER_HOME}/
 RUN sudo chmod +x ${USER_HOME}/${SCRIPT}.sh
 RUN sudo chown -R ${USER_NAME}:${USER_NAME} ${USER_HOME}/${SCRIPT}.sh
 
+#
+# sample data
+#
 COPY ${FILES_HOME}/in1.txt ${USER_HOME}/
+
+#
+# volumes
+#
+
+VOLUME  [\
+  "/project"\
+]
