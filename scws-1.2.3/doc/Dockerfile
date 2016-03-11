@@ -32,6 +32,7 @@ RUN sudo chmod +x ${USER_HOME}/${SCRIPT}.sh
 RUN ${USER_HOME}/${SCRIPT}.sh
 
 ENV USER_NAME scws
+ENV CUR_VER 1.2.3
 ENV USER_HOME /home/${USER_NAME}
 #ENV USER_GRP wheel
 
@@ -83,3 +84,21 @@ RUN ansible-playbook ${PB_HOME}/${PB}.yml -e "hosts=localhost"
 ##ENV PRJ_NAME scws
 ##RUN mkdir -p /usr/local/${PRJ_NAME}
 ##WORKDIR /usr/local/${PRJ_NAME}
+
+ENV ARC_NAME ${USER_NAME}-${CUR_VER}
+COPY ${FILES_HOME}/${ARC_NAME}.tar.bz2 ${USER_HOME}/
+RUN tar -xvjf ${ARC_NAME}.tar.bz2
+
+WORKDIR ${USER_HOME}/${ARC_NAME}
+RUN ./configure
+RUN make
+RUN sudo make install
+
+WORKDIR ${USER_HOME}
+RUN git clone https://github.com/hightman/${USER_NAME}.git
+
+WORKDIR ${USER_HOME}/${USER_NAME}/dev/dict
+RUN php calc_text.php > dict.txt
+RUN php -r 'echo mb_convert_encoding(file_get_contents("dict.txt"), "utf-8", "gbk");' > dict.utf8.txt
+
+WORKDIR ${USER_HOME}
