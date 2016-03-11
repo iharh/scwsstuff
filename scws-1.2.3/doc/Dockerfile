@@ -65,10 +65,14 @@ COPY pb/${PB}.yml ${PB_HOME}/
 RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
 RUN ansible-playbook ${PB_HOME}/${PB}.yml -e "hosts=localhost"
 
+COPY ${FILES_HOME}/wandisco-git.repo /etc/yum.repos.d/wandisco-git.repo
+#RUN sudo chown -R $(id -un):$(id -gn) ${FILES_HOME}/
+
 ENV PB pack-vcs
 COPY pb/${PB}.yml ${PB_HOME}/
 RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
 RUN ansible-playbook ${PB_HOME}/${PB}.yml -e "hosts=localhost"
+
 
 #ENV PB php
 #COPY pb/${PB}.yml ${PB_HOME}/
