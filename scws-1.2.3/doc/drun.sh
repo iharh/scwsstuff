@@ -16,11 +16,15 @@ else
 fi
 #echo RUN: $RUN_PREF "$RUN_CMD"
 #echo RUN_FLAGS: $RUN_FLAGS
-#echo RUN_PORT_MAP: $RUN_PORT_MAP
 #echo RUN_PREF: $RUN_PREF
 #echo RUN_CMD: $RUN_CMD
 
+CMN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../../.." && pwd )"
+CACHE_DIR=$CMN_DIR/docker-cache
+
+USER_HOME=/home/$CUR_NAME
+
 docker run $RUN_FLAGS\
- $RUN_PORT_MAP\
+ -v $CACHE_DIR/.gradle:$USER_HOME/.gradle\
  $CUR_GROUP/$CUR_NAME:$CUR_VER\
  $RUN_PREF "$RUN_CMD"

@@ -136,10 +136,19 @@ COPY roles/ansible-oracle-java/ ${ROLES_HOME}/ansible-oracle-java/
 RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
 RUN ANSIBLE_ROLES_PATH=${ROLES_HOME} ansible-playbook ${PB_HOME}/${PB}.yml -e @${ENV_HOME}/docker/extra-vars.json -e "hosts=localhost"
 
+
+ENV PBCI_HOME ${ANSIBLE_SCRIPTS_HOME}/pbci
+
+ENV PB gradle
+COPY pbci/${PB}.yml ${PBCI_HOME}/
+RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
+RUN ansible-playbook ${PBCI_HOME}/${PB}.yml -e @${ENV_HOME}/docker/extra-vars.json -e "hosts=localhost new_user=${USER_NAME} curfolder=${USER_HOME}"
+
 #
 # volumes
 #
 
 VOLUME  [\
-  "/project"\
+  "${USER_HOME}/.gradle"\
+  , "/project"\
 ]
