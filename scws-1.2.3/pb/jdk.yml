@@ -1,0 +1,18 @@
+---
+- hosts: "{{hosts}}"
+  become: yes
+ 
+  roles:
+    - ansible-oracle-java
+
+  vars:
+    java_version: 8
+    java_subversion: 74
+    java_download_path: '/tmp'
+    java_remove_download: true
+
+  environment: '{{env}}'
+
+  pre_tasks:
+    - name: jdk var trace
+      debug: 'msg="host: {{hosts}}"'

@@ -1,0 +1,54 @@
+---
+- hosts: "{{hosts}}"
+  become: yes
+  become_user: "{{new_user}}"
+ 
+  #roles:
+  #   - MagneDavidsen.gradle
+
+  vars:
+    gradle_version: "2.12"
+    gradle_url: "https://services.gradle.org/distributions/gradle-{{gradle_version}}-all.zip"
+    gradle_home: "{{curfolder}}/gradle-{{gradle_version}}"
+    gradle_rcfile: "{{curfolder}}/.bashrc"
+
+  environment: '{{env}}'
+
+  tasks:
+    - name: gradle | variable trace
+      debug: 'msg="hosts: {{hosts}} new_user: {{new_user}}"'
+
+    - name: gradle | check if already installed
+      stat: path={{gradle_home}}/bin/gradle
+      register: bin_gradle
+      changed_when: bin_gradle.stat.exists == False
+
+    - name: gradle | download
+      get_url:
+        url={{ gradle_url }}
+        dest=/tmp/gradle-{{gradle_version}}-all.zip
+      register: gradle_downloaded
+      when: bin_gradle.stat.exists == False
+
+    - name: gradle | unarchive
+      unarchive:
+        src=/tmp/gradle-{{gradle_version}}-all.zip
+        dest={{curfolder}}
+        creates={{gradle_home}}
+        copy=no
+      register: gradle_installed
+      when: gradle_downloaded | success
+      notify:
+        - remove gradle setup archive
+
+
+    - name: gradle | add to the PATH
+      lineinfile:
+        dest: "{{gradle_rcfile}}"
+        line: "export PATH={{gradle_home}}/bin:$PATH"
+        state: present
+      when: gradle_installed | success
+
+  handlers:
+    - name: remove gradle setup archive
+      file: name=/tmp/gradle-{{gradle_version}}-all.zip state=absent

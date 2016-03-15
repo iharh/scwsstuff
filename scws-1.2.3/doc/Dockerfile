@@ -127,6 +127,16 @@ RUN sudo chown -R ${USER_NAME}:${USER_NAME} ${USER_HOME}/${SCRIPT}.sh
 COPY ${FILES_HOME}/s1.txt ${USER_HOME}/
 
 #
+# jdk/gradle
+#
+
+ENV PB jdk
+COPY pb/${PB}.yml ${PB_HOME}/
+COPY roles/ansible-oracle-java/ ${ROLES_HOME}/ansible-oracle-java/
+RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
+RUN ANSIBLE_ROLES_PATH=${ROLES_HOME} ansible-playbook ${PB_HOME}/${PB}.yml -e @${ENV_HOME}/docker/extra-vars.json -e "hosts=localhost"
+
+#
 # volumes
 #
 
