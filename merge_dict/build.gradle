@@ -1,0 +1,11 @@
+apply plugin: "c"
+
+model {
+    components {
+        main(NativeExecutableSpec) {
+            //sources {
+            //   c.lib library: "hello"
+            //}
+        }
+    }
+}
