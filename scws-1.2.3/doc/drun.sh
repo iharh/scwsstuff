@@ -26,5 +26,6 @@ USER_HOME=/home/$CUR_NAME
 
 docker run $RUN_FLAGS\
  -v $CACHE_DIR/.gradle:$USER_HOME/.gradle\
+ -v $(pwd):/project\
  $CUR_GROUP/$CUR_NAME:$CUR_VER\
  $RUN_PREF "$RUN_CMD"
