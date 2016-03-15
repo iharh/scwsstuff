@@ -1,11 +1,26 @@
 apply plugin: "c"
 
 model {
+    buildTypes {
+        release
+    }
+repositories {
+        libs(PrebuiltLibraries) {
+            scws {
+                headers.srcDir "/usr/local/include"
+                binaries.withType(SharedLibraryBinary) {
+                    //sharedLibraryFile = file("/usr/local/lib/libscws.so")
+                    sharedLibraryFile = file("/usr/local/lib/libscws.so.1")
+                }
+            }
+        }
+    }
     components {
         main(NativeExecutableSpec) {
-            //sources {
-            //   c.lib library: "hello"
-            //}
+            sources {
+		c.lib library: 'scws'
+//, linkage: 'api'
+            }
         }
     }
 }
