@@ -145,6 +145,11 @@ RUN sudo chown -R $(id -un):$(id -gn) ${PROVIS_SCRIPTS_HOME}/
 RUN ansible-playbook ${PBCI_HOME}/${PB}.yml -e @${ENV_HOME}/docker/extra-vars.json -e "hosts=localhost new_user=${USER_NAME} curfolder=${USER_HOME}"
 
 #
+# TBD
+#
+#yum install tree
+
+#
 # volumes
 #
 
