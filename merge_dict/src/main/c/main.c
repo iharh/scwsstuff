@@ -1,15 +1,3 @@
-//include <scws/scws.h>
-
-//include <stdio.h>
-
-//int
-//main(void)
-//{
-//    printf("Hello all!\n");
-//
-//    return 0;
-//}
-
 #ifdef HAVE_CONFIG_H
 #	include "config.h"
 #endif
@@ -157,25 +145,22 @@ int main(int argc, char *argv[])
 		c = strlen(str);
 		
 		// init the word
-		do
-		{				
-			word.tf = word.idf = 1.0;
-			word.flag = SCWS_WORD_FULL;
-			word.attr[0] = '@';
-			word.attr[1] = '\0';
+		word.tf = word.idf = 1.0;
+		word.flag = SCWS_WORD_FULL;
+		word.attr[0] = '@';
+		word.attr[1] = '\0';
 
-			if (!(ptr = strtok(NULL, delim))) break;
-			word.tf = (float) atof(ptr);
+		if (!(ptr = strtok(NULL, delim))) break;
+		word.tf = (float) atof(ptr);
 
-			if (!(ptr = strtok(NULL, delim))) break;
-			word.idf = (float) atof(ptr);
+		if (!(ptr = strtok(NULL, delim))) break;
+		word.idf = (float) atof(ptr);
 
-			if (ptr = strtok(NULL, delim))
-			{
-				word.attr[0] = ptr[0];
-				if (ptr[1]) word.attr[1] = ptr[1];
-			}
-		} while (0);
+		if (ptr = strtok(NULL, delim))
+		{
+			word.attr[0] = ptr[0];
+			if (ptr[1]) word.attr[1] = ptr[1];
+		}
 
 		/* save the word */
 		//printf("word: %s (len=%d)\n", str, c);
@@ -188,6 +173,10 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
+			if (w->flag == SCWS_WORD_FULL)
+			{
+				printf("dup word: %s (len=%d)\n", str, c);
+			}
 			w->tf = word.tf;
 			w->idf = word.idf;
 			w->flag |= SCWS_WORD_FULL;
