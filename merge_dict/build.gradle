@@ -22,5 +22,15 @@ repositories {
 //, linkage: 'api'
             }
         }
+        norm_dict(NativeExecutableSpec) {
+        }
     }
 }
+
+task inst {
+}
+
+inst.dependsOn {
+    tasks.findAll { task -> task.name.startsWith('install') }
+}
+

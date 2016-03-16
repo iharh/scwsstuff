@@ -12,11 +12,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#undef PACKAGE_NAME
-#define	PACKAGE_NAME		"scws-merge-dict"
-#undef PACKAGE_VERSION
-#define	PACKAGE_VERSION		"1.2.3"
-
 static char *program_name;
 static void show_usage(int code, const char *msg)
 {
@@ -28,17 +23,13 @@ static void show_usage(int code, const char *msg)
 		exit(code);
 	}
 
-	printf("%s (%s/%s)\n", program_name, PACKAGE_NAME, PACKAGE_VERSION);
-	printf("Convert the plain text dictionary to xdb format.\n");
-	printf("Copyright (C)2007 by hightman.\n\n");
-	printf("Usage: %s [options] [input file] [output file]\n", program_name);
+	printf("%s\n", program_name);
+	printf("Merge the plain text dictionary.\n");
+	printf("Usage: %s [options] [input file]\n", program_name);
 	printf("  -i        Specified the plain text dictionary(default: dict.txt).\n");
-	printf("  -o        Specified the output file path(default: dict.xdb)\n");
-	printf("  -c        Specified the input charset(default: gbk)\n");
 	printf("  -p        Specified the PRIME num for xdb\n");
 	printf("  -v        Show the version.\n");
 	printf("  -h        Show this page.\n");
-	printf("Report bugs to <hightman2@yahoo.com.cn>\n");
 	exit(0);
 }
 
@@ -46,13 +37,13 @@ static void show_usage(int code, const char *msg)
 int main(int argc, char *argv[])
 {
 	int c,t;
-	char *input, *output, *charset, *delim = " \t\r\n";
+	char *input, *delim = " \t\r\n";
 	FILE *fp;
-	char buf[256], *str, *ptr, *mblen;
+	char buf[256], *str, *ptr;
 	word_st word, *w;
 	xtree_t xt;
 
-	input = output = charset = NULL;
+	input = NULL;
 	if ((program_name = strrchr(argv[0], '/')) != NULL)
 		program_name++;
 	else
@@ -60,25 +51,18 @@ int main(int argc, char *argv[])
 
 	/* parse the arguments */
 	t = 0;
-	while ((c = getopt(argc, argv, "i:p:o:c:vh")) != -1)
+	while ((c = getopt(argc, argv, "i:p:vh")) != -1)
 	{
 		switch (c)
 		{
 			case 'i' :
 				input = optarg;
 				break;
-			case 'o' :
-				output = optarg;
-				break;
 			case 'p' :
 				t = atoi(optarg);
 				break;
-			case 'c' :
-				charset = optarg;
-				break;
 			case 'v' :
-				printf("%s (%s/%s: convert the plain text dictionary to xdb format)\n",
-							program_name, PACKAGE_NAME, PACKAGE_VERSION);
+				printf("%s: convert the plain text dictionary to xdb format\n",	program_name);
 				exit(0);			
 				break;
 			case 'h' :
@@ -97,21 +81,11 @@ int main(int argc, char *argv[])
 		input = argv[optind++];		
 		argc--;
 	}
-	if (argc > 0 && output == NULL)
-		output = argv[optind];
 
 	if (input == NULL)
 		input = "dict.txt";
-	if (output == NULL)
-		output = "dict.xdb";
 
-	/* check the input & output */
-	if (!access(output, R_OK))
-	{
-		perror("Output file exists");
-		return -1;
-	}
-
+	/* check the input */
 	if ((fp = fopen(input, "r")) == NULL)
 	{
 		perror("Cann't open the input file");
@@ -128,8 +102,7 @@ int main(int argc, char *argv[])
 	}
 	
 	/* load the data */
-	mblen = charset_table_get(charset);
-	printf("Reading the input file: %s ...", input);
+	printf("Reading the input file: %s\n", input);
 	fflush(stdout);
 
 	t = 0;
@@ -182,43 +155,15 @@ int main(int argc, char *argv[])
 			w->flag |= SCWS_WORD_FULL;
 			strcpy(w->attr, word.attr);
 		}
-
-		/* parse the part */		
-		argc = mblen[(unsigned char)(str[0])];
-		while (1)
-		{
-			argc += mblen[(unsigned char)(str[argc])];
-			if (argc >= c)
-				break;
-
-			//printf("part: %.*s (len=%d)\n", argc, str, argc);			
-			if ((w = xtree_nget(xt, str, argc, NULL)) == NULL)
-			{
-				w = (word_st *) pmalloc_z(xt->p, sizeof(word_st));
-				w->flag = SCWS_WORD_PART;
-				xtree_nput(xt, w, sizeof(word), str, argc);
-				t++;
-			}
-			else
-			{
-				w->flag |= SCWS_WORD_PART;
-			}
-		}
 	}
 
 	/* save to xdb & free the xtree */
-	printf("OK, total nodes=%d\nOptimizing... ", t);
+	printf("Total nodes=%d\n", t);
 	fflush(stdout);
 	
-	xtree_optimize(xt);
-	
-	printf("OK\nDump the tree data to: %s ... ", output);
-	fflush(stdout);
-
-	xtree_to_xdb(xt, output);
 	xtree_free(xt);
-
 	printf("OK, all been done!\n");
+	fflush(stdout);
 
 mk_end:
 	fclose(fp);
