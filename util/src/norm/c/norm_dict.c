@@ -26,7 +26,7 @@ static void show_usage(int code, const char *msg)
 int
 main(int argc, char *argv[])
 {
-    int c, t;
+    int c;
     char *input, *delim = " \t\r\n";
     FILE *fp;
     char buf[256], attr[256], *str, *ptr;
@@ -77,25 +77,19 @@ main(int argc, char *argv[])
         return -1;
     }
 
-    /* load the data */
-    //printf("Reading the input file: %s\n", input);
-    //fflush(stdout);
-
-    t = 0;
     while (fgets(buf, sizeof(buf) - 1, fp) != NULL)
     {
         // <word>\t<tf>\t<idf>\t<attr>\n
         if (buf[0] == ';' || buf[0] == '#')
         {
-            printf("%s\n", buf);
+            printf("%s", buf);
             continue;
         }
 
         str = strtok(buf, delim);
         if (str == NULL)
             continue;
-        c = strlen(str);
-		
+
         // init the word
         tf = idf = 1.0;
 
@@ -107,16 +101,11 @@ main(int argc, char *argv[])
             break;
         idf = (float) atof(ptr);
 
-        if (ptr = strtok(NULL, delim))
-	    strcpy(attr, ptr);
+        ptr = strtok(NULL, delim);
 
-	//printf("word: %s (len=%d)\n", str, c);
-	t++;
+	printf("%s\t%.2f\t%.2f\t%s\n", str, tf, idf, "11"); // ptr
     }
 
-    //printf("Total nodes=%d\n", t);
-    //fflush(stdout);
-	
     fclose(fp);
     return 0;	
 }
