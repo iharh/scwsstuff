@@ -1,7 +1,3 @@
-#ifdef HAVE_CONFIG_H
-#	include "config.h"
-#endif
-
 #include "scws/xtree.h"
 #include "scws/xdb.h"
 #include "scws/xdict.h"
