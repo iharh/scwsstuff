@@ -1,5 +1,5 @@
 #! /bin/bash
-EXE=merge_dict
+EXE=merge
 
 #export LD_LIBRARY_PATH=/usr/local/lib
 #env | grep '^LD_LIBRARY_PATH'

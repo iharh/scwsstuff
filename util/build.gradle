@@ -16,13 +16,13 @@ repositories {
         }
     }
     components {
-        merge_dict(NativeExecutableSpec) {
+        merge(NativeExecutableSpec) {
             sources {
 		c.lib library: 'scws'
 //, linkage: 'api'
             }
         }
-        norm_dict(NativeExecutableSpec) {
+        norm(NativeExecutableSpec) {
         }
     }
 }

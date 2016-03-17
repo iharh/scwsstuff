@@ -1,5 +1,5 @@
 #! /bin/bash
-EXE=norm_dict
+EXE=norm
 
 #build/exe/$EXE/$EXE "$@"
 
