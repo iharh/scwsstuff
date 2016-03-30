@@ -4,7 +4,7 @@ model {
     buildTypes {
         release
     }
-repositories {
+    repositories {
         libs(PrebuiltLibraries) {
             scws {
                 headers.srcDir "/usr/local/include"
